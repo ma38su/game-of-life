@@ -17,7 +17,9 @@ You can change some paramters using URL query.
 - height: uint = 100
 - cellsize: uint = 7
 
-const rate = parseFloat(queries['rate'] ?? '0.1');
+### Related Project
+
+- [cellular-automata](https://github.com/ma38su/cellular-automata)
 
 ### Reference
 
