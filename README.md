@@ -15,7 +15,6 @@ You can change some paramters using URL query.
 - rate: float = 0.1
 - width: uint = 100
 - height: uint = 100
-- cellsize: uint = 7
 
 ### Related Project
 
