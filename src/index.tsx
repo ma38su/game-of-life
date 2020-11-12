@@ -14,14 +14,13 @@ const queries = window.location.search.slice(1).split('&').reduce((o, kv) => {
   return o;
 }, {} as Query);
 
-const cellsize = parseInt(queries['cellsize'] ?? '7');
 const width = parseInt(queries['width'] ?? '100');
 const height = parseInt(queries['height'] ?? '100');
 const rate = parseFloat(queries['rate'] ?? '0.1');
 
 ReactDOM.render(
   <React.StrictMode>
-    <GameOfLife width={width} height={height} cellsize={cellsize} rate={rate} />
+    <GameOfLife width={width} height={height} rate={rate} />
   </React.StrictMode>,
   document.getElementById('root')
 );

@@ -3,16 +3,18 @@ import React from 'react';
 type Props = {
   x: number;
   y: number;
-  size: number;
   state: boolean;
+  handler: (x: number, y: number) => void;
 };
 
-function Cell(props: Props) {
-  const { x, y, size, state} = props;
+const Cell = React.memo((props: Props) => {
+  const { x, y, state, handler } = props;
 
-  const stroke = '#444';
-  const color = state ? '#EEE' : '#555';
-
-  return (<rect x={x} y={y} width={size} height={size} fill={color} stroke={stroke} />);
-}
+  return (
+    <input
+      type='button'
+      className={state ? 'alive' : 'dead'}
+      onClick={() => handler(x, y)} />
+  );
+});
 export { Cell };

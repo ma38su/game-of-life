@@ -1,5 +1,5 @@
 import React from 'react';
-import { Cell } from './Cell';
+import { Row } from './Row';
 
 const nextArray = [
   [0, 1],
@@ -37,6 +37,23 @@ function nextState(states: boolean[][], x: number, y: number) {
   return false;
 }
 
+function nextStates(states: boolean[][]) {
+  return states.map((array, y) => {
+    return array.map((_, x) => nextState(states, x, y));
+  });
+}
+
+function opt(prev: boolean[][], next: boolean[][]) {
+  return prev.map((prevAry, y) => {
+    const nextAry = next[y];
+    if (prevAry.filter((v, x) => v !== nextAry[x])) {
+      return nextAry;
+    } else {
+      return prevAry;
+    }
+  });
+}
+
 function generateState(width: number, height: number, rate: number) {
   const table: boolean[][] = [];
   for (let y = 0; y < height; ++y) {
@@ -52,41 +69,62 @@ function generateState(width: number, height: number, rate: number) {
 type Props = {
   width: number;
   height: number;
-  cellsize: number;
   rate: number;
 };
 
 function GameOfLife(props: Props) {
   const {
     width, height,
-    cellsize,
     rate
   } = props;
 
+  const [stop, setStop] = React.useState(true);
   const [states, setState] = React.useState(generateState(width, height, rate));
 
+  const handlerClickCell = React.useCallback((x, y) => {
+    setState(states => {
+      const newStates = [...states];
+      const newRow = [...newStates[y]];
+      newRow[x] = !newRow[x];
+      newStates[y] = newRow;
+      return newStates;
+    })
+  }, []);
+
   React.useEffect(() => {
+    if (stop) return;
     const id = setInterval(() => {
       setState(states => {
-        const newState = states.map((array, y) => {
-          return array.map((_, x) => nextState(states, x, y));
-        });
-        return newState;
+        const next = nextStates(states);
+        return opt(states, next);
       });
     }, 10);
     return () => clearInterval(id);
-  }, [states]);
+  }, [states, stop]);
+
+  const handlerStop = React.useCallback(() => {
+    setStop(prev => !prev);
+  }, []);
 
   return (
-    <svg>
+    <>
+    <input
+      className='ctrl'
+      type='button'
+      value={stop ? 'Start' : 'Stop'}
+      onClick={handlerStop} />
     {
-      states.map((array, y) => {
-        return array.map((state, x) => (
-          <Cell x={x * cellsize} y={y * cellsize} size={cellsize} state={state} /> 
-        ))
-      })
+      states.map((array, y) => (
+        <Row
+          key={y}
+          states={array}
+          y={y}
+          handler={handlerClickCell}
+          />
+      ))
     }
-    </svg>
+
+    </>
   );
 }
 export { GameOfLife };
