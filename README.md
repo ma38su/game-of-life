@@ -19,6 +19,7 @@ You can change some paramters using URL query.
 ### Related Project
 
 - [cellular-automata](https://github.com/ma38su/cellular-automata)
+- [langton-ant](https://github.com/ma38su/langton-ant)
 
 ### Reference
 
