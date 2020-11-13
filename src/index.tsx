@@ -20,6 +20,7 @@ const rate = parseFloat(queries['rate'] ?? '0.1');
 
 ReactDOM.render(
   <React.StrictMode>
+    <h1>Game of Life</h1>
     <GameOfLife width={width} height={height} rate={rate} />
   </React.StrictMode>,
   document.getElementById('root')

@@ -150,6 +150,10 @@ function GameOfLife(props: Props) {
     })
   }, []);
 
+  const handleRandomData = React.useCallback((rate) => {
+    setState(generateState(width, height, rate))
+  }, [width, height]);
+
   const handleSwitchBoundary = React.useCallback(() => {
     setBoundary(prev => {
       if (prev === 'dead') return 'periodic';
@@ -159,25 +163,6 @@ function GameOfLife(props: Props) {
 
   return (
     <>
-    <input
-      className='ctrl'
-      type='button'
-      value={stop ? 'Start' : 'Stop'}
-      onClick={handleStop} />
-    {
-      GliderGuns.map((gun, i) => (
-        <input
-          className='ctrl'
-          type='button'
-          value={`Glider Gun ${i + 1}`}
-          onClick={() => handleReadData(gun)} />
-      ))
-    }
-    <input
-      className='ctrl'
-      type='button'
-      value={`Boundary: ${boundary}`}
-      onClick={handleSwitchBoundary} />
     {
       states.map((array, y) => (
         <Row
@@ -188,6 +173,37 @@ function GameOfLife(props: Props) {
           />
       ))
     }
+      <div>
+        {
+          GliderGuns.map((gun, i) => (
+            <input
+              className='ctrl'
+              type='button'
+              value={`Glider Gun ${i + 1}`}
+              onClick={() => handleReadData(gun)} />
+          ))
+        }
+        <input
+          className='ctrl'
+          type='button'
+          value='Random'
+          onClick={() => handleRandomData(rate)}
+          />
+      </div>
+      <div>
+        <input
+          className='ctrl'
+          type='button'
+          value={`Boundary: ${boundary}`}
+          onClick={handleSwitchBoundary} />
+      </div>
+      <div>
+        <input
+          className='ctrl'
+          type='button'
+          value={stop ? 'Start' : 'Stop'}
+          onClick={handleStop} />
+      </div>
     </>
   );
 }
